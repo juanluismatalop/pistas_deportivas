@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+
+  adminer:
+    image: adminer
+    restart: "no"
+    ports:
+      - ${ADMINER_PORT}:8080
+
+  db:
+    image: mysql:latest
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
