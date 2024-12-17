@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <div class="container-fluid">
+            <form id="instalacionForm" method="get">
+                <label for="instalacion">Seleccione una instalación para filtrar:</label>
+                <select id="instalacion" class="form-select">
+
+                    <!-- <option th:if="${instalacion} !=null" th:each="inst : ${instalaciones}" 
+                        th:value="${inst.id}"
+                        th:text="${inst.nombre}" 
+                        th:selected="${instalacion.id} == ${inst.id} ? 'selected':'false'" 
+                    ></option>
+
+                    <option th:unless="${instalacion} !=null" th:each="inst : ${instalaciones}" 
+                        th:value="${inst.id}"
+                        th:text="${inst.nombre}"                        
+                    ></option> -->
+                    <option value="-1">Todas las instalaciones</option>
+                    <option th:each="inst : ${instalaciones}" 
+                        th:value="${inst.id}"
+                        th:text="${inst.nombre}" 
+                        th:selected="${instalacion} !=null  ?
+                            (${instalacion.id} == ${inst.id} ? 'selected':'false') :
+                            'false'" 
+                    ></option> 
+
+
+                </select>
+            </form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Instalación</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="horario : ${horarios}">
+                    <td th:text="${horario.id}">ID</td>
+                    <td th:text="${horario.instalacion.nombre}">Nombre</td>
+                    <td th:text="${horario.horaInicio}">Inicio</td>
+                    <td th:text="${horario.horaFin}">Fin</td>
+                    <td> <a class="btn btn-success" th:href="|horario/edit/${horario.id}|"> editar </a> </td>
+                    <td> <a class="btn btn-danger" th:href="|horario/del/${horario.id}|"> borrar </a> </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <!-- <p>                
+                <span th:if="${page.hasPrevious()}">
+                    <a class="btn btn-success" th:href="|/horario?page=${page.number -1}|">                        
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a> 
+                </span>
+                
+                <span  class="btn btn-info" th:text="|Estás en la página ${page.number+1} de ${page.totalPages}|"></span>
+                
+                <span th:if="${page.hasNext()}">
+                    <a class="btn btn-success" th:href="|/horario?page=${page.number +1}|">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a> 
+                </span>
+            </p> -->
+            <p>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a th:if="${instalacion} == null"  class="page-link"
+                            th:href="${page.hasPrevious()} ? |/horario?page=${page.number -1}| : '#'">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            Anterior                            
+                        </a>
+                        <a th:unless="${instalacion} == null" class="page-link"
+                            th:href="${page.hasPrevious()} ? |/horario/instalacion/${instalacion.id}?page=${page.number -1}| : '#'">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            Anterior   
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link active"
+                            th:text="|Estás en la página ${page.number+1} de ${page.totalPages}|" href="#">1</a></li>
+                    <li class="page-item">
+                        <a th:if="${instalacion} == null" class="page-link"
+                            th:href="${page.hasNext()} ? |/horario?page=${page.number +1}| : '#'">
+                            Siguiente 
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                        <a th:unless="${instalacion} == null" class="page-link"
+                            th:href="${page.hasNext()} ? |/horario/instalacion/${instalacion.id}?page=${page.number +1}| : '#'">
+                            Siguiente 
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                        
+                    </li>
+                </ul>
+            </nav>
+            </p>
+        </div>
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+
+    <script>
+        $("#instalacion").change( ()=> {
+            let instalacionID = $("#instalacion").val();
+            let formulario = $("#instalacionForm");
+            if (instalacionID==-1){
+                let url = "/horario";
+                formulario.attr("action", url);
+                formulario.submit();
+            } else {
+                let url = "/horario/instalacion/"+instalacionID;                
+                formulario.attr("action", url);
+                formulario.submit();
+            }
+        });
+    </script>
+
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Error al procesar la petición</h3>
+    <h4 th:if="${titulo} != null" th:text="#{titulo}"></h4>
+    <p>No es posible realizar su operación. 
+        <span th:if="${mensaje} != null" th:text="#{mensaje}"></span>
+    </p>
+</body>
+</html>

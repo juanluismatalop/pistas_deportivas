@@ -1,6 +1,6 @@
 package com.pistasdeportivas.pistas_deportivas.modelos;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,12 +13,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Horario {
+public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Instalacion instalacion;
-    private LocalTime horaInicio;    
-    private LocalTime horaFin;
+    private Usuario usuario;
+    @ManyToOne
+    private Horario horario;
+    private LocalDate fecha;
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Bienvenido a Gestión de Pistas deportivas</h3>
+
+        <p>Seleccione una opción del menú para continuar.</p>
+
+        <div sec:authorize="isAnonymous()" class="card" style="width: 18rem;">
+            <img src="img/psitas.jpeg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Instalaciones deportivas</h5>
+              <p class="card-text">Inicie sesión para continuar.</p>
+              <a href="/login" class="btn btn-primary">Inicicar Sesión</a>
+            </div>
+          </div>
+
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+</html>

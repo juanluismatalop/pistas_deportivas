@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Editando sus datos personales</h3>
+
+        <div class="container">
+            <div class="border  rounded-3 m-2 p-2 border-2">
+            <form action="/register" method="POST">
+              <div class="row">
+                <div class="col-6">
+                  <label for="username" class="form-label"> Username: </label>
+                  <input name="username" id="username" type="text" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label for="password" class="form-label">Password:</label>
+                  <input name="password" id="password" type="password" class="form-control" />
+                </div>               
+                  <div class="mb-3">
+                    <label class="form-label"> Email: </label>
+                    <input name="email" type="email" class="form-control" />
+                  </div>
+                  <div class="mb</div>-3">
+                    Acepta las condiciones:
+                    <input type="checkbox" class="form-check-input" />            
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                  </div>
+                </div>     
+              </div>
+            </form>
+            </div>
+          </div>
+
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+</html>

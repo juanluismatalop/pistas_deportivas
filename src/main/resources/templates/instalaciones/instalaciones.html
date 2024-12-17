@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">    
+    <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+    <h3>Instalaciones</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th> 
+                <th>Nombre</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="instalacion : ${instalaciones}">
+                <td th:text="${instalacion.id}">ID</td>
+                <td th:text="${instalacion.nombre}">Nombre</td>
+                <td> <a class="btn btn-success" th:href="|instalacion/edit/${instalacion.id}|"> editar </a> </td>
+                <td> <a class="btn btn-danger" th:href="|instalacion/del/${instalacion.id}|"> borrar </a> </td>
+            </tr>            
+        </tbody>        
+    </table>    
+    <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Bienvenido a Gestión de Pistas deportivas</h3>
+        <section class="pb-4">
+        <div class="border rounded-3 m-2 p-2 border-2">
+          <section class="p-4 d-flex justify-content-center pb-4">            
+            <form method="post" action="/login" style="width: 22rem;" class="center">
+              <div class="form-outline mb-4">
+                <label for="username" class="form-label"> Username </label>
+                <input name="username" class="form-control" type="text" placeholder="su usuario (no correo electrónico)">
+              </div>
+              <div class="form-outline mb-4">
+                <label for="password" class="form-label"> Password </label>
+                <input name="password" class="form-control" type="password" placeholder="su contraseña">
+              </div>
+              <div class="form-outline mb-4">
+                <button type="submit" class="form-control btn btn-primary mb-4">Entrar en el sistema</button>              
+              </div>
+            </form>
+          </section>
+          </div>
+        </section>
+          <!-- Register buttons -->
+  <div class="text-center">
+    <p>¿Sin cuenta? <a href="/register">Registrarse</a></p>
+    <p>o puede identificarse con:</p>
+    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+      <i class="fab fa-facebook-f"></i>
+    </button>
+
+    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+      <i class="fab fa-google"></i>
+    </button>
+
+    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+      <i class="fab fa-twitter"></i>
+    </button>
+
+    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+      <i class="fab fa-github"></i>
+    </button>
+  </div>
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+</html>
