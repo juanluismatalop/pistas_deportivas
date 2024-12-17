@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Gestión de Pistas deportivas</h3>
+
+        <div class="card" style="width: 18rem;">
+            <img src="img/psitas.jpeg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Instalaciones deportivas</h5>
+              <p class="card-text">Proyecto Demo para aprender Spring Web.</p>
+              <a href="https://gitlab.iesvirgendelcarmen.com/juangu/adt05-ejercicio-clase-pistas-deportivas" class="btn btn-primary">Ir al repo base</a>
+            </div>
+          </div>
+
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <div class="container-fluid">
+            <h3 th:switch="${operacion}">
+                <span th:case="'ADD'">Añadir un nuevo horario a una instalación</span>
+                <span th:case="'DEL'">Eliminar un horario de instalación</span>
+                <span th:case="'EDIT'">Editar un horario de instalación</span>
+                <span th:case="*">Operación no soportada</span>
+            </h3>
+
+            <form method="post" th:object="${horario}" class="needs-validation" novalidate>
+
+                <input type="number" hidden name="id" th:field="*{id}" th:value="${horario.id}" />
+
+                <select class="form-select" th:field="*{instalacion}" name="instalacion" id="instalacion"
+                    th:attr="disabled=${operacion} == 'DEL' ? 'disabled' : null">
+                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}"
+                        th:text="${instalacion.nombre}"></option>
+                </select>
+
+                <div class="mb-3">
+                    <label for="horaInicio" class="form-label">Hora inicio</label>
+                    <input type="time" id="horaInicio" name="horaInicio" class="form-control" th:value="*{horaInicio}"
+                        th:attr="disabled=${operacion} == 'DEL' ? 'disabled' : null" />
+                </div>
+                <div class="mb-3">
+                    <label for="horaFin" class="form-label">Hora fin</label>
+                    <input type="time" id="horaFin" name="horaFin" class="form-control" th:value="*{horaFin}"
+                        th:attr="disabled=${operacion} == 'DEL' ? 'disabled' : null" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+        </div>
+
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+
+</html>
