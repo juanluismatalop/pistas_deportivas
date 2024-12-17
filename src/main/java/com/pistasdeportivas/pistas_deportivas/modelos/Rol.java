@@ -1,5 +1,5 @@
 package com.pistasdeportivas.pistas_deportivas.modelos;
 
-public class Rol {
-    
+public enum Rol {
+    ADMIN, OPERARIO, USUARIO
 }
