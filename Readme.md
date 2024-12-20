@@ -172,3 +172,248 @@ Y el llamamiento a el enum **Rol** que nos da el tipo de Usuario ques es osea:
 ```
 
 ## Repositorios ##
+La repos son unas interfaces que lo que hacen es generar metodos genericos para el manejo de los CRUD de los objetos creados anteriormente 
+
+### **RepoHorario** ###
+
+Jpa implementa los metodos predefinidos con los que se trabajan en SpringBoot 
+
+```JpaRepository<Horario, Long>```
+
+a)
+```
+Page<Horario> findByInstalacion(Instalacion instalacion,Pageable pageable);
+```
+
+```Instalacion instalacion```
+
+Filtra los horarios que pertenecen a una instalación específica.
+
+```Pageable pageable```
+
+Permite especificar detalles de paginación (número de página, tamaño de la página, orden)
+
+b)
+
+    List<Horario> findByInstalacion(Instalacion instalacion);
+
+Devuelve una lista con los horarios que coinciden con la instalacion
+
+### **RepoInstalacion** ###
+
+Jpa implementa los metodos predefinidos con los que se trabajan en SpringBoot 
+
+```JpaRepository<Instalacion, Long>```
+
+### **RepoReserva** ###
+
+Jpa implementa los metodos predefinidos con los que se trabajan en SpringBoot 
+
+```JpaRepository<Reserva, Long>```
+### **RepoUsuario** ###
+
+
+Jpa implementa los metodos predefinidos con los que se trabajan en SpringBoot 
+
+```JpaRepository<Usuario, Long>```
+
+## Controladores ##
+El controlador es responsable de manejar las solicitudes HTTP entrantes y enviar respuestas. Por lo general, recibe datos del usuario a través de la solicitud, delega en un servicio para realizar la lógica de negocio y luego envía una respuesta al usuario.
+
+### **ControDatos** ###
+```@Controller``` Indica que es un controlador de Spring
+
+```@RequestMapping ``` Define la URL base para las rutas gestionadas por este controlador
+
+```
+@Autowired
+RepoUsuario repoUsuario;
+```
+Es un repositorio que permite realizar operaciones de base de datos relacionadas con la entidad Usuario
+
+```
+private Usuario getLoggedUser() {
+    Authentication authentication = 
+        SecurityContextHolder.getContext().getAuthentication();
+    return repoUsuario.findByUsername(
+        authentication.getName()).get(0);
+}
+```
+Obtiene el usuario actualmente autenticado mediante el contexto de seguridad de Spring Security.
+
+Busca al usuario en la base de datos utilizando el nombre de usuario.
+
+Devuelve el primer usuario encontrado.
+
+```
+@GetMapping("")
+public String misDatos(Model modelo) {
+    modelo.addAttribute("usuario", getLoggedUser());
+    return "mis-datos/mis-datos";
+}
+```
+Añade el usuario autrntificado en la lista
+```
+@GetMapping("/edit")
+public String getMisDatos(Model modelo) {
+    modelo.addAttribute("usuario", getLoggedUser());
+    return "mis-datos/mis-datos";
+}
+```
+Carga los datos enviados del usuario autenticado y los envia al modelo
+```
+@PostMapping("/edit")
+public String postMisDatos(
+    @ModelAttribute("usuario") Usuario u,
+    Model modelo) {
+    Usuario loggedUser = getLoggedUser();
+    if (loggedUser.getId() == u.getId()) {
+        u.setTipo(loggedUser.getTipo());
+        u.setPassword(loggedUser.getPassword());
+        u.setEnabled(loggedUser.isEnabled());
+        repoUsuario.save(u);
+        return "redirect:/mis-datos";
+    } else {
+        modelo.addAttribute("mensaje", "Error editando datos de usuario");
+        modelo.addAttribute("titulo", "No ha sido posible editar sus datos.");
+        return "/error";
+    }
+}
+```
+Esto evita que un usuario pueda modificar indebidamente atributos sensibles o de otros usuarios.
+### **ControHorario** ###
+```@Controller``` Indica que es un controlador de Spring
+
+```@RequestMapping ``` Define la URL base para las rutas gestionadas por este controlador
+```
+@Autowired 
+RepoHorario repoHorario;
+
+@Autowired
+RepoInstalacion repoInstalacion;
+```
+RepoHorario: Interactúa con la base de datos para realizar operaciones sobre la entidad Horario.
+
+RepoInstalacion: Gestiona datos de la entidad Instalacion.
+
+```
+@GetMapping("")
+public String getHorarios(
+    Model model,
+    @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+    
+    Page<Horario> page = repoHorario.findAll(pageable);
+    model.addAttribute("page", page);
+    model.addAttribute("horarios", page.getContent());
+    model.addAttribute("instalaciones", repoInstalacion.findAll());
+    return "horarios/horarios";
+}
+
+```
+Recupera todos los horarios en forma paginada mediante repoHorario.findAll(pageable) y devuelve la vista horarios/horarios
+
+```
+@GetMapping("/instalacion/{id}")
+public String getHorariosByInstalacion(
+    @PathVariable @NonNull Long id,
+    Model model,
+    @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+
+    Optional<Instalacion> insOptional = repoInstalacion.findById(id);
+
+    if (insOptional.isPresent()) {
+        Page<Horario> page = repoHorario.findByInstalacion(insOptional.get(), pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("horarios", page.getContent());
+        model.addAttribute("instalaciones", repoInstalacion.findAll());
+        model.addAttribute("instalacion", insOptional.get());
+        return "horarios/horarios";
+    } else {
+        model.addAttribute("mensaje", "La instalación no existe");
+        model.addAttribute("titulo", "Error filtrando por instalación.");
+        return "/error";
+    }
+}
+```
+Busca la instalación por ID
+```
+@GetMapping("/add")
+public String addHorario(Model modelo) {
+    modelo.addAttribute("horario", new Horario());
+    modelo.addAttribute("operacion", "ADD");
+    modelo.addAttribute("instalaciones", repoInstalacion.findAll());
+    return "/horarios/add";
+}
+```
+Prepara un formulario vacío para crear un nuevo horario.
+```
+@PostMapping("/add")
+public String addHorario(
+    @ModelAttribute("horario") Horario horario)  {
+    repoHorario.save(horario);
+    return "redirect:/horario";
+}
+```
+Procesa el formularrio
+```
+@GetMapping("/edit/{id}")
+public String editHorario( 
+    @PathVariable @NonNull Long id,
+    Model modelo) {
+
+    Optional<Horario> oHorario = repoHorario.findById(id);
+    if (oHorario.isPresent()) {
+        modelo.addAttribute("horario", oHorario.get());
+        modelo.addAttribute("operacion", "EDIT");
+        modelo.addAttribute("instalaciones", repoInstalacion.findAll());
+        return "/horarios/add";
+    } else {
+        modelo.addAttribute("mensaje", "La instalación no exsiste");
+        modelo.addAttribute("titulo", "Error editando instalación.");
+        return "/error";
+    }
+}
+```
+Busca el horario por ID.
+```
+@PostMapping("/edit/{id}")
+public String editHorario(
+    @ModelAttribute("horario") Horario horario)  {
+    repoHorario.save(horario);
+    return "redirect:/horario";
+}
+```
+Actualiza la base de datos
+```
+@GetMapping("/del/{id}")
+public String delHorario( 
+    @PathVariable @NonNull Long id,
+    Model modelo) {
+
+    Optional<Horario> oHorario = repoHorario.findById(id);
+    if (oHorario.isPresent()) {
+        modelo.addAttribute("operacion", "DEL");
+        modelo.addAttribute("instalaciones", repoInstalacion.findAll());
+        modelo.addAttribute("horario", oHorario.get());
+        return "/horarios/add";
+    } else {
+        modelo.addAttribute("mensaje", "La instalación no exsiste");
+        modelo.addAttribute("titulo", "Error borrando instalación.");
+        return "/error";
+    }
+}
+```
+Elimina un horario 
+```
+@PostMapping("/del/{id}")
+public String delHorario(
+    @ModelAttribute("horario") Horario horario)  {
+    repoHorario.delete(horario);
+    return "redirect:/horario";
+}
+```
+Procesa la eliminacion de un horario
+### **ControInstalacion** ###
+### **ControMain** ###
+
+## Configuracion ##
