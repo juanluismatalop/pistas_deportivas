@@ -414,6 +414,123 @@ public String delHorario(
 ```
 Procesa la eliminacion de un horario
 ### **ControInstalacion** ###
-### **ControMain** ###
 
+```
+@Autowired 
+    RepoInstalacion repoInstalacion;
+```
+Repo instalacion interactua con la base de datos de Instalacion 
+```
+@GetMapping("")
+    public String getInstalaciones(Model model) {
+        List<Instalacion> instalaciones = repoInstalacion.findAll();
+        model.addAttribute("instalaciones", instalaciones);
+        return "instalaciones/instalaciones";
+    }
+```
+Mapea las instalaciones 
+```
+@GetMapping("/add")
+    public String addInstalacion(Model modelo) {
+        modelo.addAttribute("instalacion", new Instalacion());
+        return "/instalaciones/add";
+    }
+
+    @PostMapping("/add")
+    public String addInstalacion(
+        @ModelAttribute("instalacion") Instalacion instalacion)  {
+        repoInstalacion.save(instalacion);
+        return "redirect:/instalacion";
+    }
+```
+Hace una peticion para ver los atributos de una nueva instalacion y hace una peticion post para añadirla
+```
+@GetMapping("/edit/{id}")
+    public String editInstalacion( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+
+        Optional<Instalacion> oInstalacion = repoInstalacion.findById(id);
+        if (oInstalacion.isPresent()) {
+            modelo.addAttribute("instalacion", oInstalacion.get());
+            return "/instalaciones/add";
+        } else {
+            modelo.addAttribute("mensaje", "La instalación no exsiste");
+            modelo.addAttribute("titulo", "Error editando instalación.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editInstalacion(
+        @ModelAttribute("instalacion") Instalacion instalacion)  {
+        repoInstalacion.save(instalacion);
+        return "redirect:/instalacion";
+    }
+```
+Mapea los datos de una instalacion y lo que a continuacion hara es un post de los cambios que hayas realizado en la instalacion
+```
+@GetMapping("/del/{id}")
+    public String delInstalacion( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+
+        Optional<Instalacion> oInstalacion = repoInstalacion.findById(id);
+        if (oInstalacion.isPresent()) {
+            modelo.addAttribute("borrando", "verdadero");
+            modelo.addAttribute("instalacion", oInstalacion.get());
+            return "/instalaciones/add";
+        } else {
+            modelo.addAttribute("mensaje", "La instalación no exsiste");
+            modelo.addAttribute("titulo", "Error borrando instalación.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/del/{id}")
+    public String delInstalacion(
+        @ModelAttribute("instalacion") Instalacion instalacion)  {
+        repoInstalacion.delete(instalacion);
+        return "redirect:/instalacion";
+    }
+```
+Muestras los datos de una instalacion por su id y lo que hara a continuacion es una peticion post que eliminara la instalacion
+### **ControMain** ###
+```
+@GetMapping("/")
+    public String getIndex() {
+        return "index";
+    }
+```
+Buscara el archivo **index.html**
+```
+@GetMapping("/error")
+    public String getError() {
+        return "error";
+    }
+```
+Buscara el archivo **error.html** cuando surja un error
+```
+@GetMapping("/acerca")
+    public String acercade() {
+        return "acercade";
+    }
+```
+Buscara el archivo **acercade.html**
+```
+@GetMapping("/login")
+    public String loginForm() {
+        return "login";
+    }
+```
+Buscara el archivo **login.html**
+```
+@GetMapping("/denegado")
+    public String accesoDenegado() {
+        return "denegado";
+    }
+```
+Buscara el archivo **denegado.html**
 ## Configuracion ##
+
+El archivo **ConfiSec.java** es el que aporta la seguridad y configuracion de nuestra de aplicaicon 
