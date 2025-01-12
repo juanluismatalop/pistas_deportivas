@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>horario</title>
+</head>
+<body>
+    <h1>Detalle de la instalacion</h1>
+    <div th:if="${instalacion}">
+        <h2>Instalacion:<span th:text="${instalacion.nombre}"></span></h2>
+        <h3>Horarios</h3>
+        <ul>
+            <li th:each="horario:${horarios}">
+                <span th:text="${horario.horaInicio}"></span>-
+                <span th:text="${horario.horaFin}"></span>
+            </li>
+        </ul>
+    </div>   
+</body>
+</html>
