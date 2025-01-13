@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario</title>
+</head>
+<body>
+    <div>
+        <h1>Detalle instalacion</h1>
+        <form th:action="@{/instalacion-detalle/horarios}" method="get">
+            <div>
+                <label for="idInstalacion">Seleccionar instalacion</label>
+                <select name="idInstalacion" id="idInstalacion" required>
+                    <option value="" disabled selected>Seleccione una instalacion</option>
+                    <option th:each="instalacion:${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"></option>
+                </select>
+            </div>
+            <button type="submit">Mostrar Horarios</button>
+        </form>
+        
+    </div>
+    
+</body>
+</html>

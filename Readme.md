@@ -30,7 +30,7 @@ services:
       - ${MYSQL_PORT}:3306
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
-  ```
+```
 **.env**
 ```
 MYSQL_ROOT_PASSWORD=vivaPealDeBecerro
