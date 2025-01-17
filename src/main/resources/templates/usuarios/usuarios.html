@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <h3>Usuarios</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.id}">ID</td>
+                    <td th:text="${usuario.username}">Username</td>
+                    <td th:text="${usuario.email}">Email</td>
+                    <td th:text="${usuario.tipo}">Rol</td>
+                    <td>
+                        <a class="btn btn-success" th:href="|/usuario/edit/${usuario.id}|">Editar</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" th:href="|/usuario/del/${usuario.id}|">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+</html>

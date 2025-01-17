@@ -39,32 +39,32 @@ public class ConfiSec {
     @Bean 
     public SecurityFilterChain filtro(HttpSecurity httpSec) throws Exception {
 
-        return httpSec.authorizeHttpRequests(
-            (request) -> request
-                .requestMatchers(
-                    "/webjars/**", "/img/**", "/login", 
-                    "/logout", "/acerca", "/denegado")
-                    .permitAll()
-                .requestMatchers(
-                    "/horario/**", "/instalacion/**", "/instalacion-detalle/**")
-                    .hasAuthority("ADMIN")
-                .requestMatchers(
-                    "/mis-datos/**", "/mis-datos/*/**" )
-                    .authenticated())
-                .exceptionHandling((exception)-> exception.
-                    accessDeniedPage("/denegado") )
-                .formLogin((formLogin) -> formLogin
-                    .loginPage("/login")
-                    .permitAll())
-                //.rememberMe(
-                //    Customizer.withDefaults())
-                .logout((logout) -> logout
-                    .invalidateHttpSession(true)
-                    .logoutSuccessUrl("/")
-                    .permitAll())
-                .csrf((protection) -> protection
-                    .disable())
-                .build();
+    return httpSec.authorizeHttpRequests(
+        (request) -> request
+            .requestMatchers(
+                "/webjars/**", "/img/**", "/login", 
+                "/logout", "/acerca", "/denegado", "/favicon.ico")
+                .permitAll()
+            .requestMatchers(
+                "/horario/**", "/instalacion/**", "/instalacion-detalle/**")
+                .hasAuthority("ADMIN")
+            .requestMatchers(
+                "/usuario/**")
+                .hasAuthority("ADMIN")
+            .requestMatchers(
+                "/mis-datos/**", "/mis-datos/*/**" )
+                .authenticated())
+            .exceptionHandling((exception)-> exception.
+                accessDeniedPage("/denegado") )
+            .formLogin((formLogin) -> formLogin
+                .loginPage("/login")
+                .permitAll())
+            .logout((logout) -> logout
+                .invalidateHttpSession(true)
+                .logoutSuccessUrl("/")
+                .permitAll())
+                .csrf((csrf) -> csrf.disable())
+            .build();
     }
 }
 

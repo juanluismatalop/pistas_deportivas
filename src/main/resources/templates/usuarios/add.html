@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${#strings.isEmpty(usuario.id) ? 'Agregar Usuario' : 'Editar Usuario'}"></title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3 th:text="${#strings.isEmpty(usuario.id) ? 'Agregar Usuario' : 'Editar Usuario'}"></h3>
+
+        <form method="post" th:object="${usuario}" class="needs-validation" novalidate>
+            <input type="hidden" name="id" th:value="${usuario.id}" />
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de usuario:</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       class="form-control" 
+                       th:value="${usuario.username}" 
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       class="form-control" 
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico:</label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       class="form-control" 
+                       th:value="${usuario.email}" 
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label for="enabled" class="form-label">Activo:</label>
+                <input type="checkbox" 
+                       id="enabled" 
+                       name="enabled" 
+                       class="form-check-input" 
+                       th:checked="${usuario.enabled}" />
+            </div>
+
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Rol:</label>
+                <select id="tipo" name="tipo" class="form-select" th:value="${usuario.tipo}" required>
+                    <option value="USER" th:selected="${usuario.tipo == T(com.pistasdeportivas.pistas_deportivas.modelos.Rol).USER}">USER</option>
+                    <option value="OPERARIO" th:selected="${usuario.tipo == T(com.pistasdeportivas.pistas_deportivas.modelos.Rol).OPERARIO}">OPERARIO</option>
+                    <option value="ADMIN" th:selected="${usuario.tipo == T(com.pistasdeportivas.pistas_deportivas.modelos.Rol).ADMIN}">ADMIN</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+</html>
