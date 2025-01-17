@@ -14,33 +14,31 @@
 
         <div class="container">
             <div class="border  rounded-3 m-2 p-2 border-2">
-            <form action="/register" method="POST">
-              <div class="row">
-                <div class="col-6">
-                  <label for="username" class="form-label"> Username: </label>
-                  <input name="username" id="username" type="text" class="form-control" />
+              <form action="/register" method="POST">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="username" class="form-label">Nombre de Usuario:</label>
+                        <input name="username" id="username" type="text" class="form-control" />
+                    </div>
+                    <div class="col-6">
+                        <label for="password" class="form-label">Contraseña:</label>
+                        <input name="password" id="password" type="password" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico:</label>
+                        <input name="email" id="email" type="email" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Acepta las condiciones:</label>
+                        <input type="checkbox" class="form-check-input" required />
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" type="submit">Registrarse</button>
+                    </div>
                 </div>
-                <div class="col-6">
-                  <label for="password" class="form-label">Password:</label>
-                  <input name="password" id="password" type="password" class="form-control" />
-                </div>               
-                  <div class="mb-3">
-                    <label class="form-label"> Email: </label>
-                    <input name="email" type="email" class="form-control" />
-                  </div>
-                  <div class="mb</div>-3">
-                    Acepta las condiciones:
-                    <input type="checkbox" class="form-check-input" />            
-                  </div>
-                  <div class="mb-3">
-                    <button class="btn btn-primary" type="submit">Enviar</button>
-                  </div>
-                </div>     
-              </div>
             </form>
             </div>
           </div>
-
         <div th:replace="plantilla/fragmentos.html ::footer"></div>
     </div>
 </body>

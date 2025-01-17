@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 @RequestMapping("/usuario")
-public class UsuarioController {
+public class ControUsuario {
 
     @Autowired
     private RepoUsuario repoUsuario;

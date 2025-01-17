@@ -1,0 +1,65 @@
+package com.pistasdeportivas.pistas_deportivas.controladores;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.pistasdeportivas.pistas_deportivas.modelos.Rol;
+import com.pistasdeportivas.pistas_deportivas.modelos.Usuario;
+import com.pistasdeportivas.pistas_deportivas.repos.RepoUsuario;
+
+
+@Controller
+public class ControRegistro {
+
+    @Autowired
+    private RepoUsuario repoUsuario;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // Mostrar la página de registro
+    @GetMapping("/register")
+    public String mostrarRegistro(Model model) {
+        model.addAttribute("usuario", new Usuario()); // Objeto vacío para el formulario
+        return "register"; // Renderiza el archivo register.html
+    }
+
+    // Procesar el formulario de registro
+    @PostMapping("/register")
+    public String procesarRegistro(
+            @ModelAttribute("usuario") Usuario usuario,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            // Si hay errores, mostrar nuevamente el formulario con mensajes
+            return "register";
+        }
+
+        try {
+            // Encriptar la contraseña
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
+            // Asignar rol USER por defecto
+            usuario.setTipo(Rol.USER);
+
+            // Habilitar usuario
+            usuario.setEnabled(true);
+
+            // Guardar en la base de datos
+            repoUsuario.save(usuario);
+
+            // Redirigir al login después del registro
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", "Hubo un problema al registrar al usuario. Inténtelo nuevamente.");
+            return "register";
+        }
+    }
+}

@@ -43,7 +43,8 @@ public class ConfiSec {
         (request) -> request
             .requestMatchers(
                 "/webjars/**", "/img/**", "/login", 
-                "/logout", "/acerca", "/denegado", "/favicon.ico")
+                "/logout", "/acerca", "/denegado", "/favicon.ico",
+                "/register")
                 .permitAll()
             .requestMatchers(
                 "/horario/**", "/instalacion/**", "/instalacion-detalle/**")
