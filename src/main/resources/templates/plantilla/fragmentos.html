@@ -28,7 +28,7 @@
                                 <a class="nav-link text-white active" aria-current="page" href="/">
                                     <i class="fa-solid fa-indent"></i> | Inicio</a>
                             </li>
-                            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                            <li sec:authorize="hasAnyAuthority('ADMIN')" class="nav-item">
                                 <!-- SOLO ADMIN -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="pistasDropdown" data-bs-toggle="collapse" data-bs-target="#pistasMenu" aria-expanded="false">
                                     <i class="fa-solid fa-house-medical"></i> | Pistas
@@ -38,7 +38,7 @@
                                     <li><a class="nav-link text-white" href="/instalacion/add">Alta</a></li>
                                 </ul>
                             </li>
-                            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                            <li sec:authorize="hasAnyAuthority('ADMIN', 'OPERARIO')" class="nav-item">
                                 <!-- SOLO ADMIN -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="horariosDropdown" data-bs-toggle="collapse" data-bs-target="#horariosMenu" aria-expanded="false">
                                     <i class="fa-regular fa-clock"></i> | Horarios

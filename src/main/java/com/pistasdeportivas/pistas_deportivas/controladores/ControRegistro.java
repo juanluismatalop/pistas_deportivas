@@ -23,14 +23,12 @@ public class ControRegistro {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Mostrar la página de registro
     @GetMapping("/register")
     public String mostrarRegistro(Model model) {
-        model.addAttribute("usuario", new Usuario()); // Objeto vacío para el formulario
-        return "register"; // Renderiza el archivo register.html
+        model.addAttribute("usuario", new Usuario());
+        return "register";
     }
 
-    // Procesar el formulario de registro
     @PostMapping("/register")
     public String procesarRegistro(
             @ModelAttribute("usuario") Usuario usuario,
@@ -38,24 +36,18 @@ public class ControRegistro {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            // Si hay errores, mostrar nuevamente el formulario con mensajes
             return "register";
         }
 
         try {
-            // Encriptar la contraseña
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
-            // Asignar rol USER por defecto
             usuario.setTipo(Rol.USER);
 
-            // Habilitar usuario
             usuario.setEnabled(true);
 
-            // Guardar en la base de datos
             repoUsuario.save(usuario);
 
-            // Redirigir al login después del registro
             return "redirect:/login";
         } catch (Exception e) {
             model.addAttribute("error", "Hubo un problema al registrar al usuario. Inténtelo nuevamente.");
