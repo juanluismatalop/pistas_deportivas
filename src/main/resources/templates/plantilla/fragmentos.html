@@ -40,6 +40,16 @@
                                 </ul>
                             </li>
                             <li sec:authorize="hasAnyAuthority('ADMIN', 'OPERARIO')" class="nav-item">
+                                <!-- TODOS -->
+                                <a class="nav-link text-white dropdown-toggle" href="#" id="reservasDropdown" data-bs-toggle="collapse" data-bs-target="#reservasMenu" aria-expanded="false">
+                                    <i class="fa-solid fa-house-medical"></i> | Reservas
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="reservasMenu">                                    
+                                    <li><a class="nav-link text-white" href="/reserva">Listar</a></li>
+                                    <li><a class="nav-link text-white" href="/reserva/add">Alta</a></li>
+                                </ul>
+                            </li>
+                            <li sec:authorize="hasAnyAuthority('ADMIN', 'OPERARIO')" class="nav-item">
                                 <!-- SOLO ADMIN -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="horariosDropdown" data-bs-toggle="collapse" data-bs-target="#horariosMenu" aria-expanded="false">
                                     <i class="fa-regular fa-clock"></i> | Horarios
