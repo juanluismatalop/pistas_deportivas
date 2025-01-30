@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head th:replace="plantilla/fragmentos.html :: headfiles">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>horario</title>
+    <title>Document</title>
 </head>
 <body>
+    <div class="container-fluid">    
+    <div th:replace="plantilla/fragmentos.html :: navigation"></div>
     <h1>Detalle de la instalacion</h1>
     <div th:if="${instalacion}">
         <h2>Instalacion:<span th:text="${instalacion.nombre}"></span></h2>
@@ -16,6 +19,7 @@
                 <span th:text="${horario.horaFin}"></span>
             </li>
         </ul>
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
     </div>
 </body>
 </html>

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head th:replace="plantilla/fragmentos.html :: headfiles">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>formulario</title>
+    <title>Document</title>
 </head>
 <body>
+    <div class="container-fluid">    
+    <div th:replace="plantilla/fragmentos.html :: navigation"></div>
     <div>
         <h1>Detalle instalacion</h1>
         <form th:action="@{/instalacion-detalle/horarios}" method="get">
@@ -18,7 +21,7 @@
             </div>
             <button type="submit">Mostrar Horarios</button>
         </form>
-        
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
     </div>
     
 </body>
