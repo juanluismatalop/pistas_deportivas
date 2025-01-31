@@ -37,8 +37,9 @@ public class ControReserva {
     @GetMapping("")
     public String getReserva(Model model) {
         List<Reserva> reserva = repoReserva.findAll();
+        System.out.println(reserva.toString());
         model.addAttribute("reservas", reserva);
-        return "/reserva";
+        return "/reserva/reserva";
     }
 
     @GetMapping("/add")

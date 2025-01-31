@@ -22,9 +22,9 @@
         <tbody>
             <tr th:each="reserva : ${reservas}">
                 <td th:text="${reserva.id}">ID</td>
-                <td th:text="${reserva.nombre}">Nombre</td>
-                <td> <a class="btn btn-success" th:href="|reserva/edit/${reserva.id}|"> editar </a> </td>
-                <td> <a class="btn btn-danger" th:href="|reserva/del/${reserva.id}|"> borrar </a> </td>
+               <!--  <td th:text="${reserva.instalacion.nombre}">Nombre</td> -->
+                <!-- <td> <a class="btn btn-success" th:href="|reserva/edit/${reserva.id}|"> editar </a> </td>
+                <td> <a class="btn btn-danger" th:href="|reserva/del/${reserva.id}|"> borrar </a> </td> -->
             </tr>            
         </tbody>        
     </table>    
