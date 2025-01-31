@@ -29,22 +29,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ControReserva {
     
     @Autowired
-    RepoReserva repoReserva;
+    private RepoReserva repoReserva;
 
     @Autowired
-    private RepoUsuario repoUsuario;
-
+    private RepoInstalacion repoInstalacion;
 
     @GetMapping("")
     public String getReserva(Model model) {
         List<Reserva> reserva = repoReserva.findAll();
-        model.addAttribute("instalaciones", reserva);
-        return "/reserva/reserva";
+        model.addAttribute("reservas", reserva);
+        return "/reserva";
     }
 
     @GetMapping("/add")
     public String addReserva(Model model) {
+        List<Instalacion> instalacionesLibres = repoInstalacion.findAvailableInstalaciones();
         model.addAttribute("reserva", new Reserva());
+        model.addAttribute("instalaciones", instalacionesLibres);
         return "/reserva/add";
     }
     
@@ -87,7 +88,7 @@ public class ControReserva {
         Optional<Reserva> oReserva = repoReserva.findById(id);
         if (oReserva.isPresent()) {
             modelo.addAttribute("borrando", "verdadero");
-            modelo.addAttribute("instalacion", oReserva.get());
+            modelo.addAttribute("reserva", oReserva.get());
             return "/reserva";
         } else {
             modelo.addAttribute("mensaje", "La reserva no exsiste");

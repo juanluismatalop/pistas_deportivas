@@ -20,6 +20,8 @@ public class Reserva {
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
+private Instalacion instalacion;
+    @ManyToOne
     private Horario horario;
     private LocalDate fecha;
 }
