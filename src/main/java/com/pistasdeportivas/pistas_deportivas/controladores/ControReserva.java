@@ -1,62 +1,100 @@
-<!DOCTYPE html>
-<html lang="es">
-<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Reservas</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container-fluid">
-        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+package com.pistasdeportivas.pistas_deportivas.controladores;
+import org.springframework.stereotype.Controller;
 
-        <h3>Reservas Deportivas</h3>
-        
-        <!-- Listado de Reservas -->
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Instalación</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="reserva : ${reservas}">
-                    <td th:text="${reserva.id}"></td>
-                    <td th:text="${reserva.instalacion.nombre}"></td>
-                    <td th:text="${reserva.fecha}"></td>
-                    <td>
-                        <a th:href="@{/reserva/edit/{id}(id=${reserva.id})}" class="btn btn-warning">Editar</a>
-                        <a th:href="@{/reserva/del/{id}(id=${reserva.id})}" class="btn btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <a href="/reserva/add" class="btn btn-success">Añadir Reserva</a>
+import java.util.List;
 
-        <h3>Crear / Editar Reserva</h3>
-        <form method="post" th:object="${reserva}" class="needs-validation" novalidate>
-            <input type="hidden" name="id" th:value="${reserva.id}" />
-            
-            <div class="mb-3">
-                <label for="instalacion" class="form-label">Instalación</label>
-                <select id="instalacion" name="instalacion" class="form-control" th:attr="disabled=${borrando} != null ? 'disabled' : null">
-                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}" th:selected="${instalacion.id == reserva.instalacion.id}"></option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="fecha" class="form-label">Fecha</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" th:value="${reserva.fecha}" />
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;red;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-        <div th:replace="plantilla/fragmentos.html ::footer"></div>
-    </div>
-</body>
-</html>
+import com.pistasdeportivas.pistas_deportivas.modelos.Instalacion;
+import com.pistasdeportivas.pistas_deportivas.modelos.Reserva;
+import com.pistasdeportivas.pistas_deportivas.repos.RepoInstalacion;
+import com.pistasdeportivas.pistas_deportivas.repos.RepoReserva;
+
+import ch.qos.logback.core.model.Model;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/reserva")
+public class ControReserva {
+
+    @Autowired
+    RepoReserva repoReserva;
+
+    @Autowired 
+    RepoInstalacion repoInstalacion;
+
+    @GetMapping("")
+    public String getReservas(Model model){
+        List<Instalacion> instalaciones = repoInstalacion.findAll();
+        model.addAttribute("reserva", reserva);
+        return "reserva/reserva"
+    }
+
+    @GetMapping("/add")
+    public String addReservas(Model modelo) {
+        modelo.addAttribute("reserva", new Reserva());
+        return "/reserva/add";
+    }
+
+    @PostMapping("/add")
+    public String addReservas(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoReserva.save(reserva);
+        return "redirect:/reserva";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editReserva( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+
+        Optional<Reserva> oReserva = repoReserva.findById(id);
+        if (oReserva.isPresent()) {
+            modelo.addAttribute("reserva", oReserva.get());
+            return "/reserva/add";
+        } else {
+            modelo.addAttribute("mensaje", "La reserva no exsiste");
+            modelo.addAttribute("titulo", "Error editando reserva.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editReserva(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoReserva.save(reserva);
+        return "redirect:/reserva";
+    }
+
+
+    @GetMapping("/del/{id}")
+    public String delReserva( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+
+        Optional<Instalacion> oReserva = repoReserva.findById(id);
+        if (oReserva.isPresent()) {
+            modelo.addAttribute("borrando", "verdadero");
+            modelo.addAttribute("reserva", oInstalacion.get());
+            return "/reserva/add";
+        } else {
+            modelo.addAttribute("mensaje", "La reserva no exsiste");
+            modelo.addAttribute("titulo", "Error borrando instalación.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/del/{id}")
+    public String delReserva(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoInstalacion.delete(reserva);
+        return "redirect:/reserva";
+    }
+}
