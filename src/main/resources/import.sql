@@ -132,10 +132,10 @@ INSERT INTO horario (id, instalacion_id, hora_inicio, hora_fin) VALUES (140,	14,
 
 
 
-INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (1,	2,	130,	'2019-10-12');
-INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (2,	2,	130,	'2019-10-13');
-INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (4,	7,	120,	'2019-11-11');
-INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (5,	7,	130,	'2019-11-21');
+INSERT INTO reserva (id, usuario_id, horario_id, instalacion_id, fecha) VALUES (1, 2, 130, 10, '2019-10-12');
+INSERT INTO reserva (id, usuario_id, horario_id, instalacion_id, fecha) VALUES (2, 2, 130, 8, '2019-10-13');
+INSERT INTO reserva (id, usuario_id, horario_id, instalacion_id, fecha) VALUES (4, 7, 120, 7, '2019-11-11');
+INSERT INTO reserva (id, usuario_id, horario_id, instalacion_id, fecha) VALUES (5, 7, 130, 14, '2019-11-21');
 
 
 
