@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pistasdeportivas.pistas_deportivas.modelos.Instalacion;
 import com.pistasdeportivas.pistas_deportivas.modelos.Reserva;
+import com.pistasdeportivas.pistas_deportivas.repos.RepoHorario;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoInstalacion;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoReserva;
 
@@ -29,6 +30,9 @@ public class ControReserva {
 
     @Autowired
     private RepoInstalacion repoInstalacion;
+
+    @Autowired
+    private RepoHorario repoHorario;
 
     @GetMapping("")
     public String getReserva(Model model) {
@@ -61,10 +65,9 @@ public class ControReserva {
         Optional<Reserva> oReserva = repoReserva.findById(id);
         if (oReserva.isPresent()) {
             modelo.addAttribute("reserva", oReserva.get());
-            // Agregamos todas las instalaciones para que se muestren en la lista desplegable.
             List<Instalacion> instalaciones = repoInstalacion.findAll();
             modelo.addAttribute("instalaciones", instalaciones);
-            return "/reserva/add"; // Si usas la misma vista para add y edit
+            return "/reserva/add";
         } else {
             modelo.addAttribute("mensaje", "La reserva no existe");
             modelo.addAttribute("titulo", "Error editando reserva.");
@@ -89,9 +92,11 @@ public class ControReserva {
         if (oReserva.isPresent()) {
             modelo.addAttribute("borrando", "verdadero");
             modelo.addAttribute("reserva", oReserva.get());
-            return "/reserva";
+            List<Instalacion> instalaciones = repoInstalacion.findAll();
+            modelo.addAttribute("instalaciones", instalaciones);
+            return "/reserva/add";
         } else {
-            modelo.addAttribute("mensaje", "La reserva no exsiste");
+            modelo.addAttribute("mensaje", "La reserva no existe");
             modelo.addAttribute("titulo", "Error borrando reserva.");
             return "/error";
         }
