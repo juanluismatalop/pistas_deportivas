@@ -57,13 +57,16 @@ public class ControReserva {
     public String editReserva( 
         @PathVariable @NonNull Long id,
         Model modelo) {
-
+    
         Optional<Reserva> oReserva = repoReserva.findById(id);
         if (oReserva.isPresent()) {
             modelo.addAttribute("reserva", oReserva.get());
-            return "/reserva/add";
+            // Agregamos todas las instalaciones para que se muestren en la lista desplegable.
+            List<Instalacion> instalaciones = repoInstalacion.findAll();
+            modelo.addAttribute("instalaciones", instalaciones);
+            return "/reserva/add"; // Si usas la misma vista para add y edit
         } else {
-            modelo.addAttribute("mensaje", "La reserva no exsiste");
+            modelo.addAttribute("mensaje", "La reserva no existe");
             modelo.addAttribute("titulo", "Error editando reserva.");
             return "/error";
         }
