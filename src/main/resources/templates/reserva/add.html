@@ -18,19 +18,14 @@
             <div class="mb-3">
                 <label for="instalacion" class="form-label">Instalación</label>
                 <select id="instalacion" name="instalacion.id" class="form-control" required>
-                    <option value="" disabled 
-                        th:if="${reserva.instalacion == null}" 
-                        selected>Seleccione una instalación</option>
+                    <option value="" disabled selected>Seleccione una instalación</option>
                     <option th:each="instalacion : ${instalaciones}"
                             th:value="${instalacion.id}"
                             th:text="${instalacion.nombre}"
-                            th:selected="
-                                ${reserva.instalacion != null} ? 
-                                ${instalacion.id} == ${reserva.instalacion.id} : false
-                            ">
+                            th:selected="${reserva.instalacion?.id == instalacion.id}">
                     </option>
                 </select>
-            </div>
+            </div>            
         
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form> 

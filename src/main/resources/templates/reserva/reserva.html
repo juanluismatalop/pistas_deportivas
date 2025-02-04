@@ -15,6 +15,9 @@
                 <tr>
                     <th>#</th> 
                     <th>Nombre</th>
+                    <th>Hora inicio</th>
+                    <th>Hora fin</th>
+                    <th>Fecha</th>
                     <th>Editar</th>
                     <th>Borrar</th>
                 </tr>
@@ -23,6 +26,9 @@
                 <tr th:each="reserva : ${reservas}">
                     <td th:text="${reserva.id}">ID</td>
                     <td th:text="${reserva.instalacion.nombre}">Nombre</td>
+                    <td th:text="${reserva.horario.horaInicio}">HorarioInicio</td>
+                    <td th:text="${reserva.horario.horaFin}">HorarioFin</td>
+                    <td th:text="${reserva.fecha}">Fecha</td>
                     <td>
                         <a 
                             class="btn btn-success" 
