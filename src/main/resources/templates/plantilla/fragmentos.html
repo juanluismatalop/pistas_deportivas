@@ -39,7 +39,7 @@
                                     <li><a class="nav-link text-white" href="/instalacion/add">Alta</a></li>
                                 </ul>
                             </li>
-                            <li sec:authorize="hasAnyAuthority('ADMIN', 'OPERARIO', 'USER')" class="nav-item">
+                            <li sec:authorize="hasAnyAuthority('ADMIN', 'OPERARIO')" class="nav-item">
                                 <!-- TODOS -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="reservasDropdown" data-bs-toggle="collapse" data-bs-target="#reservasMenu" aria-expanded="false">
                                     <i class="fa-solid fa-house-medical"></i> | Reservas

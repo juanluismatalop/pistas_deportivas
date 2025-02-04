@@ -25,7 +25,34 @@
                             th:selected="${reserva.instalacion?.id == instalacion.id}">
                     </option>
                 </select>
-            </div>            
+
+                <select id="usuario" name="usuario.id" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuarios}"
+                            th:value="${usuario.id}"
+                            th:text="${usuario.username}"
+                            th:selected="${reserva.usuario?.id == usuario.id}">
+                    </option>
+                </select>
+
+                <select id="horario" name="horario.id" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una Horario</option>
+                    <option th:each="horario : ${horarios}"
+                            th:value="${horario.id}"
+                            th:text="${horario.horaInicio}"
+                            th:selected="${reserva.horario?.id == horario.id}"
+                            >
+                    </option>
+                </select>
+                <input 
+                    type="date" 
+                    id="fecha" 
+                    name="fecha" 
+                    class="form-control"
+                    th:value="${reserva.fecha}" 
+                    required
+                >
+            </div>
         
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form> 
