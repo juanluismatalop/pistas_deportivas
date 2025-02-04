@@ -495,6 +495,112 @@ Mapea los datos de una instalacion y lo que a continuacion hara es un post de lo
     }
 ```
 Muestras los datos de una instalacion por su id y lo que hara a continuacion es una peticion post que eliminara la instalacion
+### **ControReserva** ###
+
+```
+@Autowired 
+    RepoInstalacion repoInstalacion;
+```
+```
+@Autowired 
+    RepoReserva repoReserva;
+```
+```
+@Autowired 
+    RepoHorario repoHorario;
+```
+los Repos interactua con la base de datos de Instalacion, Horario y Reserva 
+```
+@GetMapping("")
+    public String getReserva(Model model) {
+        List<Reserva> reserva = repoReserva.findAll();
+        System.out.println(reserva.toString());
+        model.addAttribute("reservas", reserva);
+        return "/reserva/reserva";
+    }
+```
+Mapea las reservas 
+```
+    @GetMapping("/add")
+    public String addReserva(Model model) {
+        List<Instalacion> instalacionesLibres = repoInstalacion.findAvailableInstalaciones();
+        model.addAttribute("reserva", new Reserva());
+        model.addAttribute("instalaciones", instalacionesLibres);
+        return "/reserva/add";
+    }
+    
+    @PostMapping("/add")
+    public String addReserva(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoReserva.save(reserva);
+        return "redirect:/reserva";
+    }
+```
+Hace una peticion para ver los atributos de una nueva reserva y hace una peticion post para añadirla
+```
+    @GetMapping("/edit/{id}")
+    public String editReserva( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+    
+        Optional<Reserva> oReserva = repoReserva.findById(id);
+        if (oReserva.isPresent()) {
+            modelo.addAttribute("reserva", oReserva.get());
+            List<Instalacion> instalaciones = repoInstalacion.findAll();
+            modelo.addAttribute("instalaciones", instalaciones);
+            List<Horario> horarios = repoHorario.findByInstalacion(null);
+            modelo.addAttribute("horario", horarios);
+            return "/reserva/add";
+        } else {
+            modelo.addAttribute("mensaje", "La reserva no existe");
+            modelo.addAttribute("titulo", "Error editando reserva.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editReserva(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoReserva.save(reserva);
+        return "redirect:/reserva";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editInstalacion(
+        @ModelAttribute("instalacion") Instalacion instalacion)  {
+        repoInstalacion.save(instalacion);
+        return "redirect:/instalacion";
+    }
+```
+Mapea los datos de una reserva y lo que a continuacion hara es un post de los cambios que hayas realizado en la reserva
+```
+    @GetMapping("/del/{id}")
+    public String delReserva( 
+        @PathVariable @NonNull Long id,
+        Model modelo) {
+
+        Optional<Reserva> oReserva = repoReserva.findById(id);
+        if (oReserva.isPresent()) {
+            modelo.addAttribute("borrando", "verdadero");
+            modelo.addAttribute("reserva", oReserva.get());
+            List<Instalacion> instalaciones = repoInstalacion.findAll();
+            modelo.addAttribute("instalaciones", instalaciones);
+            return "/reserva/add";
+        } else {
+            modelo.addAttribute("mensaje", "La reserva no existe");
+            modelo.addAttribute("titulo", "Error borrando reserva.");
+            return "/error";
+        }
+    }
+
+    @PostMapping("/del/{id}")
+    public String delReserva(
+        @ModelAttribute("reserva") Reserva reserva)  {
+        repoReserva.delete(reserva);
+        return "redirect:/reserva";
+    }
+```
+Muestras los datos de una reserva por su id y lo que hara a continuacion es una peticion post que eliminara la reserva
 ### **ControMain** ###
 ```
 @GetMapping("/")
