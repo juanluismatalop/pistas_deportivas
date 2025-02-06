@@ -15,6 +15,7 @@ import com.pistasdeportivas.pistas_deportivas.modelos.Reserva;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoHorario;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoInstalacion;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoReserva;
+import com.pistasdeportivas.pistas_deportivas.repos.RepoUsuario;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,6 +36,9 @@ public class ControReserva {
     @Autowired
     private RepoHorario repoHorario;
 
+    @Autowired
+    private RepoUsuario repoUsuario;
+
     @GetMapping("")
     public String getReserva(Model model) {
         List<Reserva> reserva = repoReserva.findAll();
@@ -48,6 +52,9 @@ public class ControReserva {
         List<Instalacion> instalacionesLibres = repoInstalacion.findAvailableInstalaciones();
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("instalaciones", instalacionesLibres);
+        model.addAttribute("instalaciones", repoInstalacion.findAll());
+        model.addAttribute("horarios", repoHorario.findAll());
+        model.addAttribute("usuarios", repoUsuario.findAll());
         return "/reserva/add";
     }
     
@@ -68,8 +75,8 @@ public class ControReserva {
             modelo.addAttribute("reserva", oReserva.get());
             List<Instalacion> instalaciones = repoInstalacion.findAll();
             modelo.addAttribute("instalaciones", instalaciones);
-            List<Horario> horarios = repoHorario.findByInstalacion(null);
-            modelo.addAttribute("horario", horarios);
+            modelo.addAttribute("horarios", repoHorario.findAll());
+            modelo.addAttribute("usuarios", repoUsuario.findAll());
             return "/reserva/add";
         } else {
             modelo.addAttribute("mensaje", "La reserva no existe");

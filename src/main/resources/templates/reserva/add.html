@@ -16,13 +16,42 @@
             <input type="number" hidden name="id" th:value="${reserva.id}" />
         
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" 
-                       id="nombre" 
-                       name="nombre" 
-                       class="form-control" 
-                       th:value="${reserva.instalacion.nombre}" 
-                       th:attr="disabled=${borrando} != null ? 'disabled' : null" />
+                <label for="instalacion" class="form-label">Instalación</label>
+                <select id="instalacion" name="instalacion.id" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una instalación</option>
+                    <option th:each="instalacion : ${instalaciones}"
+                            th:value="${instalacion.id}"
+                            th:text="${instalacion.nombre}"
+                            th:selected="${reserva.instalacion?.id == instalacion.id}">
+                    </option>
+                </select>
+
+                <select id="usuario" name="usuario.id" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuarios}"
+                            th:value="${usuario.id}"
+                            th:text="${usuario.username}"
+                            th:selected="${reserva.usuario?.id == usuario.id}">
+                    </option>
+                </select>
+
+                <select id="horario" name="horario.id" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una Horario</option>
+                    <option th:each="horario : ${horarios}"
+                            th:value="${horario.id}"
+                            th:text="${horario.horaInicio}"
+                            th:selected="${reserva.horario?.id == horario.id}"
+                            >
+                    </option>
+                </select>
+                <input 
+                    type="date" 
+                    id="fecha" 
+                    name="fecha" 
+                    class="form-control"
+                    th:value="${reserva.fecha}" 
+                    required
+                >
             </div>
         
             <button type="submit" class="btn btn-primary">Enviar</button>

@@ -47,13 +47,13 @@ public class ConfiSec {
                 "/register")
                 .permitAll()
             .requestMatchers(
-                "/horario/**", "/instalacion/**", "/instalacion-detalle/**")
+                "/horario/**", "/instalacion/**", "/instalacion-detalle/**", "/reserva/**")
                 .hasAnyAuthority("ADMIN", "OPERARIO")   
             .requestMatchers(
                 "/usuario/**")
                 .hasAuthority("ADMIN")
             .requestMatchers(
-                "/mis-datos/**", "/mis-datos/*/**", "/reserva/**" )
+                "/mis-datos/**", "/mis-datos/*/**")
                 .authenticated())
             .exceptionHandling((exception)-> exception.
                 accessDeniedPage("/denegado") )
