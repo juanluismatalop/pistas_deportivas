@@ -1,6 +1,5 @@
 package com.pistasdeportivas.pistas_deportivas.modelos;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
