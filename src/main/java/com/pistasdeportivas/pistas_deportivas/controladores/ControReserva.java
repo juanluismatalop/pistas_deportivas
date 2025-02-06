@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pistasdeportivas.pistas_deportivas.modelos.Horario;
 import com.pistasdeportivas.pistas_deportivas.modelos.Instalacion;
 import com.pistasdeportivas.pistas_deportivas.modelos.Reserva;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoHorario;
@@ -67,6 +68,8 @@ public class ControReserva {
             modelo.addAttribute("reserva", oReserva.get());
             List<Instalacion> instalaciones = repoInstalacion.findAll();
             modelo.addAttribute("instalaciones", instalaciones);
+            List<Horario> horarios = repoHorario.findByInstalacion(null);
+            modelo.addAttribute("horario", horarios);
             return "/reserva/add";
         } else {
             modelo.addAttribute("mensaje", "La reserva no existe");

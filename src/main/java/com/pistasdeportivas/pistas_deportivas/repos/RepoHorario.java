@@ -16,4 +16,5 @@ public interface RepoHorario  extends JpaRepository<Horario, Long>{
 
     List<Horario> findByInstalacion(Instalacion instalacion);
     
+    
 }
