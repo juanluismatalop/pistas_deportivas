@@ -1,5 +1,6 @@
 package com.pistasdeportivas.pistas_deportivas.controladores;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pistasdeportivas.pistas_deportivas.modelos.Instalacion;
 import com.pistasdeportivas.pistas_deportivas.modelos.Reserva;
+import com.pistasdeportivas.pistas_deportivas.modelos.Rol;
+import com.pistasdeportivas.pistas_deportivas.modelos.Usuario;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoHorario;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoInstalacion;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoReserva;
@@ -47,13 +50,22 @@ public class ControReserva {
     }
 
     @GetMapping("/add")
-    public String addReserva(Model model) {
-        List<Instalacion> instalacionesLibres = repoInstalacion.findAvailableInstalaciones();
-        model.addAttribute("reserva", new Reserva());
-        model.addAttribute("instalaciones", instalacionesLibres);
+    public String addReserva(Model model, Principal principal) {
+        Reserva reserva = new Reserva();
+        String username = principal.getName();
+        
+        List<Usuario> usuariosAutenticados = repoUsuario.findByUsername(username);
+        if (!usuariosAutenticados.isEmpty() && usuariosAutenticados.get(0).getTipo().equals(Rol.USER)) {
+            reserva.setUsuario(usuariosAutenticados.get(0));
+            model.addAttribute("usuarios", usuariosAutenticados);
+        } else {
+            model.addAttribute("usuarios", repoUsuario.findAll());
+        }
+        
+        model.addAttribute("reserva", reserva);
         model.addAttribute("instalaciones", repoInstalacion.findAll());
         model.addAttribute("horarios", repoHorario.findAll());
-        model.addAttribute("usuarios", repoUsuario.findAll());
+        
         return "/reserva/add";
     }
     
