@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crear Reserva</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -12,54 +12,61 @@
 
         <h3>Crear reserva deportiva</h3>
 
-        <form method="post" th:object="${reserva}" class="needs-validation" novalidate>
-            <input type="number" hidden name="id" th:value="${reserva.id}" />
-        
+        <form method="post" th:action="@{'/reserva/add'}" class="needs-validation" novalidate>
+            <input type="hidden" name="id" th:value="${reserva.id}" />
+            
             <div class="mb-3">
-                <label for="instalacion" class="form-label">Instalación</label>
-                <select id="instalacion" name="instalacion.id" class="form-control" required>
-                    <option value="" disabled selected>Seleccione una instalación</option>
-                    <option th:each="instalacion : ${instalaciones}"
-                            th:value="${instalacion.id}"
-                            th:text="${instalacion.nombre}"
-                            th:selected="${reserva.instalacion?.id == instalacion.id}">
-                    </option>
-                </select>
-
-                <select id="usuario" name="usuario.id" class="form-control" required>
-                    <option value="" disabled selected>Seleccione un usuario</option>
-                    <option th:each="usuario : ${usuarios}"
-                            th:value="${usuario.id}"
-                            th:text="${usuario.username}"
-                            th:selected="${reserva.usuario?.id == usuario.id}">
-                    </option>
-                </select>
-
-                <select id="horario" name="horario.id" class="form-control" required>
-                    <option value="" disabled selected>Seleccione una Horario</option>
-                    <option th:each="horario : ${horarios}"
-                            th:value="${horario.id}"
-                            th:text="${horario.horaInicio}"
-                            th:selected="${reserva.horario?.id == horario.id}"
-                            >
-                    </option>
-                </select>
+                <label for="fecha" class="form-label">Fecha</label>
                 <input 
                     type="date" 
                     id="fecha" 
                     name="fecha" 
                     class="form-control"
-                    th:value="${reserva.fecha}" 
+                    th:value="${fecha}" 
                     required
-                >
+                    onchange="this.form.submit()"
+                />
             </div>
-        
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            
+            <div class="mb-3">
+                <label for="instalacion" class="form-label">Instalación</label>
+                <select id="instalacion" name="instalacionId" class="form-control" required onchange="this.form.submit()">
+                    <option value="" disabled selected>Seleccione una instalación</option>
+                    <option th:each="instalacion : ${instalaciones}"
+                            th:value="${instalacion.id}"
+                            th:text="${instalacion.nombre}"
+                            th:selected="${instalacionSeleccionada?.id == instalacion.id}">
+                    </option>
+                </select>
+            </div>
+            
+            <div class="mb-3" th:if="${instalacionSeleccionada != null && fecha != null}">
+                <label for="horario" class="form-label">Horario Disponible</label>
+                <select id="horario" name="horarioId" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un horario</option>
+                    <option th:each="horario : ${horarios}"
+                            th:value="${horario.id}"
+                            th:text="${horario.horaInicio + ' - ' + horario.horaFin}">
+                    </option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Usuario</label>
+                <select id="usuario" name="usuarioId" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuarios}"
+                            th:value="${usuario.id}"
+                            th:text="${usuario.nombre}"
+                            th:selected="${usuarioSeleccionado?.id == usuario.id}">
+                    </option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Crear Reserva</button>
         </form>
-        
-        
 
-        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
     </div>
 </body>
 </html>
