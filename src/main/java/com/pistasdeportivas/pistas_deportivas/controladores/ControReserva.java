@@ -50,7 +50,7 @@ public class ControReserva {
     }
 
     @GetMapping("/add")
-    public String addReserva(Model model, Principal principal) {
+    public String addReserva(Long instalacionId, Model model, Principal principal) {
         Reserva reserva = new Reserva();
         String username = principal.getName();
         
@@ -64,7 +64,15 @@ public class ControReserva {
         
         model.addAttribute("reserva", reserva);
         model.addAttribute("instalaciones", repoInstalacion.findAll());
-        model.addAttribute("horarios", repoHorario.findAll());
+        
+        Instalacion instalacionSeleccionada = Optional.ofNullable(instalacionId)
+            .flatMap(repoInstalacion::findById)
+            .orElse(null);
+        reserva.setInstalacion(instalacionSeleccionada);
+        model.addAttribute("instalacionSeleccionada", instalacionSeleccionada);
+        model.addAttribute("horarios", Optional.ofNullable(instalacionSeleccionada)
+            .map(repoHorario::findByInstalacion)
+            .orElse(null));
         
         return "/reserva/add";
     }
