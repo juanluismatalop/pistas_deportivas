@@ -18,6 +18,7 @@ import com.pistasdeportivas.pistas_deportivas.repos.RepoHorario;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoInstalacion;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoReserva;
 import com.pistasdeportivas.pistas_deportivas.repos.RepoUsuario;
+import com.pistasdeportivas.pistas_deportivas.service.ReservaValidacionService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -77,9 +78,19 @@ public class ControReserva {
         return "/reserva/add";
     }
     
+    @Autowired
+    private ReservaValidacionService reservaValidacionService;
+
     @PostMapping("/add")
-    public String addReserva(
-        @ModelAttribute("reserva") Reserva reserva)  {
+    public String addReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
+        if (!reservaValidacionService.esFechaValida(reserva.getFecha())) {
+            model.addAttribute("mensajeError", "No se puede reservar con más de 2 semanas de anticipación.");
+            model.addAttribute("reserva", reserva);
+            model.addAttribute("instalaciones", repoInstalacion.findAll());
+            model.addAttribute("usuarios", repoUsuario.findAll());
+            model.addAttribute("horarios", repoHorario.findAll());
+            return "/reserva/add"; // Volver al formulario con el mensaje de error
+        }
         repoReserva.save(reserva);
         return "redirect:/reserva";
     }

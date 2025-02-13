@@ -8,13 +8,17 @@
 </head>
 <body>
     <div class="container-fluid">
+        
         <div th:replace="plantilla/fragmentos.html :: navigation"></div>
 
         <h3>Crear reserva deportiva</h3>
 
         <form method="post" th:object="${reserva}" class="needs-validation" novalidate>
             <input type="number" hidden name="id" th:value="${reserva.id}" />
-        
+            <div th:if="${mensajeError}" class="alert alert-danger mt-3" role="alert">
+                <span th:text="${mensajeError}"></span>
+            </div>
+            
             <div class="mb-3">
                 <label for="instalacion" class="form-label">Instalación</label>
                 <select id="instalacion" name="instalacion.id" class="form-control" required
