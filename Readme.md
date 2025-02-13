@@ -530,8 +530,15 @@ Mapea las reservas
     }
     
     @PostMapping("/add")
-    public String addReserva(
-        @ModelAttribute("reserva") Reserva reserva)  {
+    public String addReserva(@ModelAttribute("reserva") Reserva reserva, Model model) {
+        if (!reservaValidacionService.esFechaValida(reserva.getFecha())) {
+            model.addAttribute("mensajeError", "No se puede reservar con más de 2 semanas de anticipación.");
+            model.addAttribute("reserva", reserva);
+            model.addAttribute("instalaciones", repoInstalacion.findAll());
+            model.addAttribute("usuarios", repoUsuario.findAll());
+            model.addAttribute("horarios", repoHorario.findAll());
+            return "/reserva/add"; // Volver al formulario con el mensaje de error
+        }
         repoReserva.save(reserva);
         return "redirect:/reserva";
     }
@@ -640,3 +647,20 @@ Buscara el archivo **denegado.html**
 ## Configuracion ##
 
 El archivo **ConfiSec.java** es el que aporta la seguridad y configuracion de nuestra de aplicaicon 
+
+## Servicio ##
+Esto nos ayudara para restriccion para que no se haga reservas para mas de 2 semanas 
+
+```
+@Service
+public class ReservaValidacionService {
+
+    private static final int LIMITE_SEMANAS = 2;
+
+    public boolean esFechaValida(LocalDate fechaReserva) {
+        LocalDate hoy = LocalDate.now();
+        LocalDate limite = hoy.plusWeeks(LIMITE_SEMANAS);
+        return !fechaReserva.isAfter(limite);
+    }
+}
+```
